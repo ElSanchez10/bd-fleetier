@@ -1,5 +1,5 @@
 create table ciudad (
-  id         uuid        not null default gen_random_uuid(),
+  id         int         generated always as identity,
   nombre     text        not null,
   creado_en  timestamptz not null default now()
 );

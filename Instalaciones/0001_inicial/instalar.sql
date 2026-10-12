@@ -3,7 +3,7 @@
 -- Es lo mínimo para iniciar sesión; cada módulo de la app (coolers,
 -- conductores, rutas…) agrega sus tablas en una instalación propia.
 -- Convenciones: nombres en español, snake_case, tablas en singular,
--- claves primarias uuid (gen_random_uuid() viene incluido desde PG 13).
+-- claves primarias numéricas que la base asigna en orden (identity).
 --
 -- La ejecuta Instalaciones/instalar.sh, dentro de una transacción.
 -- Las rutas de \ir son relativas a este archivo.

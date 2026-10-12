@@ -12,15 +12,20 @@ instalación de este repositorio; nada se crea a mano.
 | `Tables/` | `create table`: columnas, `not null` y defaults |
 | `Constraints/` | PK, FK, unique y checks, un archivo por tabla |
 | `Indexes/` | índices, un archivo por tabla |
+| `Data/` | datos iniciales |
+| `Novedades/` | cambios sobre objetos ya instalados (`alter`, migración de datos) |
 | `Instalaciones/` | scripts mayores y el instalador |
 
-Carpetas que se crean cuando haga falta: `Data/` (datos iniciales),
-`Functions/` y `Triggers/` (`create or replace`), `Novedades/` (cambios sobre
-objetos ya instalados: `alter`, migración de datos) y `Consultas/` (consultas
-de ejemplo; no se instalan).
+Carpetas que se crean cuando haga falta: `Functions/` y `Triggers/`
+(`create or replace`) y `Consultas/` (consultas de ejemplo; no se instalan).
 
-Convenciones: nombres en español, `snake_case`, tablas en singular y claves
-primarias `uuid`.
+Convenciones: nombres en español, `snake_case` y tablas en singular.
+
+Las claves primarias son números que la base asigna en orden
+(`int generated always as identity`), no `uuid`: en esta app los números se le
+muestran a la gente ("ruta 152", "cooler 37") y salen en las exportaciones.
+Que se puedan adivinar no importa, porque toda la API exige sesión y valida
+qué puede ver cada cuenta.
 
 ## Instalaciones
 
