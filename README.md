@@ -31,6 +31,14 @@ una valida la regla que le toca y, si falla, lanza un error con un código
 (`ruta_conductor_ocupado`) y que un cooler esté en dos rutas sin devolver
 (`ruta_cooler_ocupado`).
 
+### Registros diarios
+
+Junto con las rutas, en Actividad se anotan los pedidos especiales
+(`pedido_especial`, a un destino de `destino_pedido_especial`), los atrasos de
+órdenes (`atraso`, de despacho o de picking) y los casos excepcionales de un
+conductor (`caso_excepcional`). Son registros sueltos, sin estados: la base solo
+valida cantidades y referencias.
+
 Convenciones: nombres en español, `snake_case` y tablas en singular.
 
 Las claves primarias son números que la base asigna en orden
