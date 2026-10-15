@@ -7,7 +7,14 @@
 -- =====================================================================
 
 -- Functions
--- (todavía no hay)
+-- Las de rutas: primero las que usan las demás.
+\ir ../Functions/ruta_asignar_cooler.sql
+\ir ../Functions/ruta_quitar_cooler.sql
+\ir ../Functions/ruta_iniciar.sql
+\ir ../Functions/ruta_cerrar.sql
+\ir ../Functions/cooler_devolver.sql
+\ir ../Functions/ruta_crear.sql
+\ir ../Functions/ruta_editar.sql
 
 -- Triggers
 -- (todavía no hay)
