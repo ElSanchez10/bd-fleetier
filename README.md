@@ -13,23 +13,27 @@ instalación de este repositorio; nada se crea a mano.
 | `Constraints/` | PK, FK, unique y checks, un archivo por tabla |
 | `Indexes/` | índices, un archivo por tabla |
 | `Data/` | datos iniciales |
-| `Functions/` | funciones (`create or replace`); las instala `reaplicables.sql` |
 | `Novedades/` | cambios sobre objetos ya instalados (`alter`, migración de datos) |
 | `Instalaciones/` | scripts mayores y el instalador |
 
-Carpetas que se crean cuando haga falta: `Triggers/` (`create or replace`) y
-`Consultas/` (consultas de ejemplo; no se instalan).
+Carpetas que se crean cuando haga falta: `Functions/` y `Triggers/`
+(`create or replace`; las instala `reaplicables.sql`) y `Consultas/` (consultas
+de ejemplo; no se instalan).
+
+La base asegura que los datos no queden incoherentes: llaves foráneas, checks e
+índices únicos, con nombre para que el back sepa qué falló. Las reglas del
+negocio (quién puede hacer qué, en qué orden cambian los estados) las valida el
+back.
 
 ### Rutas
 
-Los estados de las rutas y de sus coolers solo los cambian las funciones de
-`Functions/`: `ruta_crear`, `ruta_editar`, `ruta_asignar_cooler`,
-`ruta_quitar_cooler`, `ruta_iniciar`, `ruta_cerrar` y `cooler_devolver`. Cada
-una valida la regla que le toca y, si falla, lanza un error con un código
-(`ruta_cerrada`, `cooler_no_disponible`…) que el back entrega al front. Dos
-índices únicos parciales impiden que un conductor tenga dos rutas abiertas
-(`ruta_conductor_ocupado`) y que un cooler esté en dos rutas sin devolver
-(`ruta_cooler_ocupado`).
+Los estados de las rutas y de sus coolers los cambia el back
+(`back-dsl/src/rutas/operaciones.service.ts`), en transacciones. La base
+asegura lo que no puede quedar mal: dos índices únicos parciales impiden que un
+conductor tenga dos rutas abiertas (`ruta_conductor_ocupado`) y que un cooler
+esté en dos rutas sin devolver (`ruta_cooler_ocupado`); un check impide que una
+ruta que ya partió quede sin conductor (`ruta_sin_conductor`). Hasta la
+instalación `0009` estas reglas eran funciones de la base.
 
 ### Registros diarios
 
