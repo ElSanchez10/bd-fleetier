@@ -1,12 +1,12 @@
-# Base de datos de DSL: Postgres + instalador del esquema.
+# Base de datos de Fleetier: Postgres + instalador del esquema.
 # El nombre del proyecto va fijo para que el volumen se llame siempre igual,
 # sin importar desde qué carpeta se ejecute (workspace de Jenkins incluido).
-name: dsl-bd
+name: fleetier-bd
 
 services:
   db:
     image: postgres:16
-    container_name: dsl-db
+    container_name: fleetier-db
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -45,4 +45,4 @@ volumes:
 
 networks:
   interna:
-    name: dsl_interna   # el back se une a esta red como externa
+    name: fleetier_interna   # el back se une a esta red como externa

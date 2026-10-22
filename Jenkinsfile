@@ -10,7 +10,7 @@ pipeline {
     stage('Desplegar') {
       steps {
         // Credencial tipo "Secret file" con el contenido del .env
-        withCredentials([file(credentialsId: 'dsl-env', variable: 'ENV_FILE')]) {
+        withCredentials([file(credentialsId: 'fleetier-env', variable: 'ENV_FILE')]) {
           sh 'docker compose --env-file "$ENV_FILE" up -d --wait db'
           sh 'docker compose --env-file "$ENV_FILE" run --rm --build migrar'
         }

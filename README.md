@@ -1,6 +1,6 @@
-# bd-dsl
+# bd-fleetier
 
-Base de datos (Postgres 16) de DSL. Todo cambio de esquema entra por una
+Base de datos (Postgres 16) de Fleetier. Todo cambio de esquema entra por una
 instalación de este repositorio; nada se crea a mano.
 
 ## Estructura
@@ -28,7 +28,7 @@ back.
 ### Rutas
 
 Los estados de las rutas y de sus coolers los cambia el back
-(`back-dsl/src/rutas/operaciones.service.ts`), en transacciones. La base
+(`back-fleetier/src/modules/rutas/operaciones.service.ts`), en transacciones. La base
 asegura lo que no puede quedar mal: dos índices únicos parciales impiden que un
 conductor tenga dos rutas abiertas (`ruta_conductor_ocupado`) y que un cooler
 esté en dos rutas sin devolver (`ruta_cooler_ocupado`); un check impide que una
@@ -98,8 +98,8 @@ estaba.
 
 Configuración en Jenkins, una sola vez:
 
-1. Credencial de tipo *Secret file* con id `dsl-env`: un archivo con las
-   variables de `.env.example` de este repositorio y de `back-dsl`, con una
+1. Credencial de tipo *Secret file* con id `fleetier-env`: un archivo con las
+   variables de `.env.example` de este repositorio y de `back-fleetier`, con una
    clave larga en `DB_PASSWORD`. La usan los dos pipelines.
 2. Job de tipo *Pipeline* → *Pipeline script from SCM* → este repositorio, rama
    `main`, script `Jenkinsfile`.
@@ -119,7 +119,7 @@ Nunca usar `docker compose down -v`: borra el volumen con los datos.
 
 ### Conectar el back
 
-El back se une a la red de este proyecto (`dsl_interna`) y usa `dsl-db` como
+El back se une a la red de este proyecto (`fleetier_interna`) y usa `fleetier-db` como
 host. La base no está en la red `proxy`.
 
 ### Cliente SQL
@@ -132,7 +132,7 @@ equipo conectado a la VPN. No responde desde la red local ni desde internet.
 Consola SQL en el servidor:
 
 ```bash
-docker exec -it dsl-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
+docker exec -it fleetier-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
 ```
 
 ## Probar en local
