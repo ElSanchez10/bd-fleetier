@@ -24,7 +24,7 @@ services:
     # Puerto para clientes SQL. Por defecto solo responde en la propia máquina;
     # cada servidor define en su .env dónde publicarlo (nunca en 0.0.0.0).
     ports:
-      - "${DB_PUBLICAR:-127.0.0.1:5434}:5432"
+      - "${DB_PUBLICAR:-127.0.0.1:5435}:5432"
 
   migrar:
     build: .
@@ -37,6 +37,21 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - interna
+
+  # Datos de prueba (Demo/datos.sh). Solo corre a mano: el perfil lo deja
+  # fuera de `up` y del Jenkinsfile.
+  datos:
+    build: .
+    profiles: ["datos"]
+    restart: "no"
+    entrypoint: ["/bd/Demo/datos.sh"]
+    environment:
+      PGHOST: db
+      PGDATABASE: ${DB_NAME}
+      PGUSER: ${DB_USER}
+      PGPASSWORD: ${DB_PASSWORD}
     networks:
       - interna
 

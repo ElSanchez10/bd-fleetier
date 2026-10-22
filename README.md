@@ -15,6 +15,7 @@ instalación de este repositorio; nada se crea a mano.
 | `Data/` | datos iniciales |
 | `Novedades/` | cambios sobre objetos ya instalados (`alter`, migración de datos) |
 | `Instalaciones/` | scripts mayores y el instalador |
+| `Demo/` | datos de prueba y vaciado; no son parte de la instalación |
 
 Carpetas que se crean cuando haga falta: `Functions/` y `Triggers/`
 (`create or replace`; las instala `reaplicables.sql`) y `Consultas/` (consultas
@@ -126,7 +127,7 @@ host. La base no está en la red `proxy`.
 
 El puerto de la base se publica donde diga `DB_PUBLICAR` en el `.env` del
 servidor; sin esa variable solo responde en la propia máquina
-(`127.0.0.1:5434`). En la caja de arena vale `10.8.0.1:5434`: se entra desde un
+(`127.0.0.1:5435`). En la caja de arena vale `10.8.0.1:5435`: se entra desde un
 equipo conectado a la VPN. No responde desde la red local ni desde internet.
 
 Consola SQL en el servidor:
@@ -137,8 +138,35 @@ docker exec -it fleetier-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
 
 ## Probar en local
 
-`../local.sh base` crea una base temporal (puerto 55433) y le aplica las
+`../local.sh base` crea una base temporal (puerto 55434) y le aplica las
 instalaciones; `../local.sh borrar` la elimina. No toca la base desplegada.
+`../local.sh demo` le carga los datos de prueba y `../local.sh vaciar` la deja
+como recién instalada.
+
+## Datos de prueba
+
+`Demo/` no es una instalación: nada de ahí corre al desplegar. Se usa a mano,
+con el servicio `datos` del compose (perfil `datos`, fuera de `up`).
+
+| Comando | Qué hace |
+|---|---|
+| `datos cargar` | carga `Demo/cargar.sql`: 3 ciudades, 4 locales, 3 usuarios, 8 conductores, 24 coolers, rutas de hoy y de las últimas dos semanas y algunos registros diarios. Las fechas se calculan desde hoy. Solo corre sobre una base sin datos |
+| `datos vaciar <base>` | corre `Demo/vaciar.sql`: borra todos los datos, vuelve los id a 1 y recarga los catálogos de `Data/`. Conserva el esquema, `control.instalacion` y los admin (sus sesiones se cierran). Pide el nombre de la base como confirmación |
+
+En el servidor, desde la carpeta del repo y con el `.env` del servidor:
+
+```bash
+docker compose --env-file <archivo .env> run --rm --build datos cargar
+docker compose --env-file <archivo .env> run --rm --build datos vaciar fleetier
+```
+
+Los usuarios de prueba (`asistente@fleetier.cl`,
+`encargado.providencia@fleetier.cl`, `coordinador.maipu@fleetier.cl`) entran
+con `fleetier-demo-2026`. Las cuentas de los conductores no se cargan: van
+cifradas con `CLAVE_CUENTAS`, que la base no conoce.
+
+`vaciar` borra igual los datos reales: antes de usarlo en una base con datos
+de verdad, respaldo.
 
 ## Respaldo
 
